@@ -1,18 +1,16 @@
-const fs = require('fs/promises');
+const fs = require('fs');
 
-async function solve1() {
-  const data = await fs.readFile('./input.txt', { encoding: 'utf8' });
-  const splitData = data.split('\n');
-  const result = Math.max(...splitData.reduce(([best, last], line) => {
-    return (line == '' ? [Math.max(best, last), 0] : [best, last + parseInt(line)]);
-  }, [0, 0]));
-  console.log(result);
+function solve1() {
+  return Math.max(...fs.readFileSync('./input.txt', 'utf8')
+    .split('\n')
+    .reduce(([best, last], line) =>
+      (line == '' ? [Math.max(best, last), 0] : [best, last + parseInt(line)]),
+      [0, 0]));
 }
 
-async function solve2() {
-  const data = await fs.readFile('./input.txt', { encoding: 'utf8' });
-  const splitData = data.split('\n');
-  const result = splitData
+function solve2() {
+  return fs.readFileSync('./input.txt', 'utf8')
+    .split('\n')
     .reduce(([arr, last], line) =>
       (line == '' ? [arr.concat(last), 0] : [arr, last + parseInt(line)]),
       [[], 0])
@@ -20,7 +18,7 @@ async function solve2() {
     .sort((a, b) => b - a)
     .slice(0, 3)
     .reduce((total, x) => total + x);
-  console.log(result);
 }
 
-solve2();
+console.log(solve1());
+console.log(solve2());
